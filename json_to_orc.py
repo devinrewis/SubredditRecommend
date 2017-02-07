@@ -53,7 +53,7 @@ def distributedJsonRead(s3Key):
 pkeys = sc.parallelize(keyList) #keyList is a list of s3 keys
 dataRdd = pkeys.flatMap(distributedJsonRead)
 
-print(files.top(3))
+print(dataRdd.top(3))
 #file = sc.textFile(settings['json-data']).persist(StorageLevel(True, True, False, False, 1))
 #comments = sq.read.json(file)
 #comments.write.mode('append').format("orc").save(settings['orc-data'])
