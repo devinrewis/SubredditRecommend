@@ -14,6 +14,7 @@ from pyspark import StorageLevel
 from pyspark.sql import SparkSession
 from pyspark.sql import Row
 import boto3
+import botocore
 import json
 import yaml
 
