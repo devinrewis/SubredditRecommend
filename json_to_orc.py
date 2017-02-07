@@ -46,6 +46,8 @@ bucket = s3.Bucket(settings['json-data'])
 keyList = [k.key for k in bucket.objects.all()]
 
 def distributedJsonRead(s3Key):
+    import boto3
+    import botocore
     s3obj = boto3.resource('s3').Object(bucket_name=settings['json-data'], key=s3Key)
     contents = json.loads(s3obj.get()['Body'].read().decode('utf-8'))
     for dicts in content['interactions']:
