@@ -3,17 +3,25 @@ from flask import render_template, request
 import json
 import requests
 import redis
+import yaml
+
+#load settings.yaml
+with open("settings.yaml", 'r') as stream:
+    try:
+        settings = yaml.load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index')
 def index():
     errors = []
-    rec = dict()
+    rec = dict() #dict to store recommendations
 
-    rdb = redis.StrictRedis(host='##REDIS HOST##', port=6379, db=0)
+    rdb = redis.StrictRedis(host=settings['redis-host'], port=settings['redis-port'], db=0)
     if request.method == "POST":
         try:
-            subreddit = request.form['subreddit-input']
+            subreddit = request.form['input-box']
             rec = rdb.get(subreddit).decode('utf-8')
             rec = json.loads(rec)
             rec = rec[:20]

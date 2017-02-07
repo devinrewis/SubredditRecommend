@@ -7,7 +7,9 @@
 	<h1>Subreddit Recommendation</h1>
 	<form role="form" method='POST' action='/'>
 		<div class="form-group">
-			<input type="text" name="subreddit-input" class="form-control" id="subreddit-box" placeholder="Enter a subreddit..." style="max-width: 300px;" autofocus required>
+			<input type="text" name="input-box" class="form-control" id="input-box" placeholder="Enter a Subreddit or Reddit user..." style="max-width: 300px;" autofocus required>
+            <input type="radio" name="rec-type" id="subreddit" value="subreddit"> Subreddit </input>
+            <input type="radio" name="rec-type" id="author" value="author"> User </input>
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>

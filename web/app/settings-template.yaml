@@ -1,0 +1,2 @@
+redis-host: #redis hostname
+redis-port: #redis port
