@@ -21,9 +21,9 @@ def index():
     rdb = redis.StrictRedis(host=settings['redis-host'], port=settings['redis-port'], db=0)
     if request.method == "POST":
         try:
-            rec = rdb.get(request.form['rec-type'], request.form['input-box']).decode('utf-8')
+            rec = rdb.hget(request.form['rec-type'], request.form['input-box']).decode('utf-8')
             rec = json.loads(rec)
             rec = rec[:20]
         except:
-            errors.append("Unable to find subreddit. Try Again")
+            errors.append("Unable to find subreddit or user. Try Again")
     return render_template('index.html', title = 'SubRec', errors=errors, rec=rec)
