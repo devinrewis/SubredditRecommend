@@ -35,15 +35,15 @@ with open("settings.yaml", 'r') as stream:
 
 rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
 
-class VectorSpace:
+class CosineSim:
     ##
-    # VectorSpace
+    # CosineSim
     ##
     #
     # This is a generalized class for computing cosine similarity between
     # two points in a vector space.
     #
-    # The VectorSpace object is created by inputting a dataframe with
+    # The CosineSim object is created by inputting a dataframe with
     # the first column containing keys and the second containing vector values.
     #
     # The cosine function will return keys and values containing the degrees of
@@ -90,7 +90,7 @@ subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 #author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
 #create VectorSpace object for comparison
-subredditCompare = VectorSpace(subreddit_vectors)
+subredditCompare = CosineSim(subreddit_vectors)
 
 #create list of subreddits to compare
 sv = subreddit_vectors.rdd.keys().collect()

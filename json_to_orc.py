@@ -12,6 +12,7 @@
 from pyspark import SparkContext
 from pyspark import StorageLevel
 from pyspark.sql import SparkSession
+from boto.s3.connection import S3Connection
 import json
 import yaml
 
@@ -28,6 +29,33 @@ with open("settings.yaml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
-file = sc.textFile(settings['json-data']).persist(StorageLevel(True, True, False, False, 1))
-comments = sq.read.json(file)
+conn = S3Connection()
+bucket = conn.get_bucket(settings['json-data'])
+keys = sc.parallelize(bucket.list())
+files = keys.flatMap(fetch_files)
+
+def fetch_files(key):
+    for line in key.get_contents_as_string().splitlines():
+        j = json.loads(line)
+        yield j
+
+
+#file = sc.textFile(settings['json-data']).persist(StorageLevel(True, True, False, False, 1))
+#comments = sq.read.json(file)
 comments.write.mode('append').format("orc").save(settings['orc-data'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
