@@ -47,7 +47,7 @@ key_list = [k.key for k in bucket.objects.all()]
 def distributedJsonRead(s3Key):
     s3obj = boto3.resource('s3').Object(bucket_name=settings['json-data'], key=s3Key)
     contents = json.loads(s3obj.get()['Body'].read().decode('utf-8'))
-    for dicts in content['interactions']
+    for dicts in content['interactions']:
         yield Row(**dicts)
 
 pkeys = sc.parallelize(keyList) #keyList is a list of s3 keys
