@@ -21,8 +21,7 @@ def index():
     rdb = redis.StrictRedis(host=settings['redis-host'], port=settings['redis-port'], db=0)
     if request.method == "POST":
         try:
-            subreddit = request.form['input-box']
-            rec = rdb.get(subreddit).decode('utf-8')
+            rec = rdb.get(request.form['rec-type'], request.form['input-box']).decode('utf-8')
             rec = json.loads(rec)
             rec = rec[:20]
         except:
