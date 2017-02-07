@@ -13,14 +13,21 @@ from pyspark import SparkContext
 from pyspark import StorageLevel
 from pyspark.sql import SparkSession
 import json
+import yaml
 
-#create Spark context
+#create Spark context and Spark session
 sc = SparkContext(appName = "S3 JSON to ORC")
 sq = SparkSession \
     .builder \
     .getOrCreate()
 
+#load settings.yaml
+with open("settings.yaml", 'r') as stream:
+    try:
+        settings = yaml.load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
 
-file = sc.textFile("####S3 BUCKET CONTAINING JSONS####").persist(StorageLevel(True, True, False, False, 1))
+file = sc.textFile(settings['json-data']).persist(StorageLevel(True, True, False, False, 1))
 comments = sq.read.json(file)
-comments.write.mode('append').format("orc").save("s3n://reddit-comment-data-orc/data-test/")
+comments.write.mode('append').format("orc").save(settings['orc-data'])

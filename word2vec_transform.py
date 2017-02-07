@@ -33,7 +33,7 @@ sqlContext = SQLContext(sc)
 hiveContext = HiveContext(sc)
 hiveContext.setConf("spark.sql.orc.filterPushdown", "true")
 
-comments = hiveContext.read.format("orc").load("##STORAGE LOCATION FOR ORC COMMENT DATA##")
+comments = hiveContext.read.format("orc").load(settings['orc-data'])
 
 #select author & body columns
 comments = comments.select(comments['author'], comments['subreddit'], comments['body'])
@@ -49,12 +49,12 @@ tokenizer = RegexTokenizer(inputCol="body", outputCol="words") \
 comments = tokenizer.transform(comments)
 
 #remove stop words
-stopWordFile = open('stopWords.txt')
+stopWordFile = open(settings['stop-word-file'])
 sWords = stopWordFile.read().split('\n')
 remover = StopWordsRemover(inputCol="words", outputCol="filtered", stopWords=sWords)
 comments = remover.transform(comments)
 
-model = Word2VecModel.load("##STORAGE LOCATION FOR WORD2VEC MODEL##")
+model = Word2VecModel.load(settings['word2vec-model'])
 
 subreddit_vectors = model.transform(comments)
 author_vectors = subreddit_vectors
@@ -75,8 +75,8 @@ author_vectors = author_vectors.rdd.mapValues(lambda v: v.toArray()) \
     .toDF(['author', 'vector'])
     
 #save vector key-value pairs to S3
-subreddit_vectors.write.mode('overwrite').save("##STORAGE LOCATION FOR SUBREDDIT VECTORS##")
-author_vectors.write.mode('overwrite').save("##STORAGE LOCATION FOR AUTHOR VECTORS##")
+subreddit_vectors.write.mode('overwrite').save(settings['subreddit-vectors'])
+author_vectors.write.mode('overwrite').save(settings['author-vectors'])
 
 
 

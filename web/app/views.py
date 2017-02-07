@@ -16,7 +16,7 @@ def index():
             subreddit = request.form['subreddit-input']
             rec = rdb.get(subreddit).decode('utf-8')
             rec = json.loads(rec)
-            rec = rec[:50]
+            rec = rec[:20]
         except:
             errors.append("Unable to find subreddit. Try Again")
     return render_template('index.html', title = 'SubRec', errors=errors, rec=rec)

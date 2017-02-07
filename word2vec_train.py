@@ -31,13 +31,19 @@ import boto3
 import botocore
 
 sc = SparkContext(appName = "Word2Vec Train")
-  
 sqlContext = SQLContext(sc)
 
 hiveContext = HiveContext(sc)
 hiveContext.setConf("spark.sql.orc.filterPushdown", "true")
 
-comments = hiveContext.read.format("orc").load("##STORAGE LOCATION FOR ORC COMMENT DATA##")
+#load settings.yaml
+with open("settings.yaml", 'r') as stream:
+    try:
+        settings = yaml.load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
+
+comments = hiveContext.read.format("orc").load(settings['orc-data'])
 
 #select author & body columns
 comments = comments.select(comments['author'], comments['subreddit'], comments['body'])
@@ -53,7 +59,7 @@ tokenizer = RegexTokenizer(inputCol="body", outputCol="words") \
 comments = tokenizer.transform(comments)
 
 #remove stop words
-stopWordFile = open('stopWords.txt')
+stopWordFile = open(settings['stop-word-file'])
 sWords = stopWordFile.read().split('\n')
 remover = StopWordsRemover(inputCol="words", outputCol="filtered", stopWords=sWords)
 comments = remover.transform(comments)
@@ -69,7 +75,7 @@ model = word2vec.fit(comments)
 #model.getVectors().show()
 
 #save model to S3 for later use
-model.save("##STORAGE LOCATION FOR WORD2VEC MODEL##")
+model.save(settings['word2vec-model'])
 
 
 

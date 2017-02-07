@@ -20,12 +20,20 @@ from pyspark.ml.linalg import SparseVector, DenseVector, VectorUDT
 from pyspark.mllib.stat import Statistics
 import redis
 import json
+import yaml
 
-
+#create spark context and SQL context
 sc = SparkContext(appName = "Recommend")
 sqlContext = SQLContext(sc)
 
-rdb = redis.StrictRedis(host='##REDIS HOST##', port=6379, db=0)
+#load settings.yaml
+with open("settings.yaml", 'r') as stream:
+    try:
+        settings = yaml.load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
+
+rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
 
 class VectorSpace:
     ##
@@ -78,8 +86,8 @@ class VectorSpace:
 
 
 #load subreddit vectors from S3
-subreddit_vectors = sqlContext.read.parquet("##STORAGE LOCATION FOR SUBREDDIT VECTORS##")
-#author_vectors = sqlContext.read.parquet("##STORAGE LOCATION FOR AUTHOR VECTORS##")
+subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
+#author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
 #create VectorSpace object for comparison
 subredditCompare = VectorSpace(subreddit_vectors)
