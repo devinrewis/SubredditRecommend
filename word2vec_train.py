@@ -29,6 +29,7 @@ import pickle
 import string
 import boto3
 import botocore
+import yaml
 
 sc = SparkContext(appName = "Word2Vec Train")
 sqlContext = SQLContext(sc)
