@@ -42,7 +42,7 @@ files = keys.flatMap(fetch_files)
 '''
 s3 = boto3.resource('s3')
 bucket = s3.Bucket(settings['json-data'])
-key_list = [k.key for k in bucket.objects.all()]
+keyList = [k.key for k in bucket.objects.all()]
 
 def distributedJsonRead(s3Key):
     s3obj = boto3.resource('s3').Object(bucket_name=settings['json-data'], key=s3Key)
