@@ -30,8 +30,7 @@ with open("settings.yaml", 'r') as stream:
         print(exc)
 
 
-file = sc.textFile(settings['json-data']).persist(StorageLevel(True, True, False, False, 1))
-comments = sq.read.json(file)
+comments = sq.read.json(settings['json-data'])
 comments.write.mode('append').format("orc").save(settings['orc-data'])
 
 
