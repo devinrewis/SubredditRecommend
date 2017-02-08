@@ -68,8 +68,8 @@ class CosineSim:
         #
         
         #find the vector based on key provided by compareVector
-        a = self.vectorSpace.filter(self.vectorSpace.a == compareVector).collect()[0]['vector']
-        
+        #a = self.vectorSpace.filter(self.vectorSpace.a == compareVector).collect()[0]['vector']
+        a = compareVector
         a_mag = a.norm(2)
 
         #
@@ -86,9 +86,9 @@ class CosineSim:
 
 
 #load subreddit vectors from S3
-subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
+#subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors = sqlContext.read.parquet(settings['author-vectors'])
-
+'''
 #create CosineSim object for comparison
 subredditCompare = CosineSim(subreddit_vectors)
 
@@ -101,7 +101,7 @@ for x in sv:
     rec_list = subredditCompare.cosine(x).collect()
     rec_json = json.dumps(rec_list)
     rdb.hset('subreddit', x, rec_json)
-    
+'''    
 ##Compare Authors to Subreddits
 
 #create list of subreddits to compare
@@ -109,7 +109,7 @@ sv = author_vectors.rdd.keys().collect()
 
 #do cosine comparison for each subreddit and store to Redis
 for x in sv:
-    rec_list = subredditCompare.cosine(x).collect()
+    rec_list = subredditCompare.cosine(author_vectors.filter(x).collect()[0]['vector']).collect()
     rec_json = json.dumps(rec_list)
     rdb.hset('author', x, rec_json)
 
