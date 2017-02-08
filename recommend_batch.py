@@ -88,10 +88,10 @@ class CosineSim:
 #load subreddit vectors from S3
 #subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors = sqlContext.read.parquet(settings['author-vectors'])
-'''
+
 #create CosineSim object for comparison
 subredditCompare = CosineSim(subreddit_vectors)
-
+'''
 ##Compare Subreddits to Subreddits
 #create list of subreddits to compare
 sv = subreddit_vectors.rdd.keys().collect()
