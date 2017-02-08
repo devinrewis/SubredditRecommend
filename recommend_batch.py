@@ -109,7 +109,7 @@ sv = author_vectors.rdd.keys().collect()
 
 #do cosine comparison for each subreddit and store to Redis
 for x in sv:
-    rec_list = subredditCompare.cosine(author_vectors.filter(x).collect()[0]['vector']).collect()
+    rec_list = subredditCompare.cosine(author_vectors.filter(author_vectors.author == x).collect()[0]['vector']).collect()
     rec_json = json.dumps(rec_list)
     rdb.hset('author', x, rec_json)
 
