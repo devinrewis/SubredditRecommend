@@ -23,6 +23,7 @@ def index():
     rec = dict() #dict to store recommendations
     userInput = dict()
     form = QueryForm()
+    recList = []
 
     rdb = redis.StrictRedis(host=settings['redis-host'], port=settings['redis-port'], db=0)
     
@@ -34,7 +35,7 @@ def index():
             rec = rdb.hget(userInput['type'], userInput['query']).decode('utf-8')
             rec = dict(rec)
             rec = rec[:20]
-            recList = []
+            
             i = 0
             for k,v in rec.items():
                 recList.append({'id': i, 'subreddit': k, 'sim':v})
