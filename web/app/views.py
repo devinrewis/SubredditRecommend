@@ -35,11 +35,12 @@ def index():
             rec = rdb.hget(userInput['type'], userInput['query']).decode('utf-8')
             rec = dict(rec)
             rec = rec[:20]
-            
+            rec = dict(rec)
             i = 0
             for k,v in rec.items():
                 recList.append({'id': i, 'subreddit': k, 'sim':v})
                 i += 1
+            print(recList)
         except:
             errors.append("Unable to find subreddit or user. Try Again")
     return render_template('index.html', title = 'SubRec', errors=errors, recList=recList, form=form)

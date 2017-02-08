@@ -58,7 +58,7 @@ text {
              "name": "topics",
              "children": [
               {% for i in recList %}
-                {{ i | tojson }}
+                {{ i|safe }}
               {% endfor %}
              ]
             }
