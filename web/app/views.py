@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request
-from query import *
+from flask_wtf import FlaskForm
+from app.query import *
 import json
 import requests
 import redis
@@ -13,17 +14,19 @@ with open("settings.yaml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
+app.secret_key = 'development'
+
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     errors = []
     rec = dict() #dict to store recommendations
-    
-    form = QueryForm(request.POST)
+    userInput = dict()
+    form = QueryForm()
 
     rdb = redis.StrictRedis(host=settings['redis-host'], port=settings['redis-port'], db=0)
     
-    if request.method == "POST" and form.validate():
+    if request.method == 'POST':
         userInput['type'] = form.inputType.data
         userInput['query'] = form.userInput.data
         
@@ -33,7 +36,7 @@ def index():
             rec = rec[:20]
         except:
             errors.append("Unable to find subreddit or user. Try Again")
-    return render_template('index.html', title = 'SubRec', errors=errors, rec=rec)
+    return render_template('index.html', title = 'SubRec', errors=errors, rec=rec, form=form)
     
     
     

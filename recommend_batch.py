@@ -92,6 +92,7 @@ author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 #create CosineSim object for comparison
 subredditCompare = CosineSim(subreddit_vectors)
 
+##Compare Subreddits to Subreddits
 #create list of subreddits to compare
 sv = subreddit_vectors.rdd.keys().collect()
 
@@ -101,8 +102,7 @@ for x in sv:
     rec_json = json.dumps(rec_list)
     rdb.hset('subreddit', x, rec_json)
     
-#create CosineSim object for comparison
-subredditCompare = CosineSim(author_vectors)
+##Compare Authors to Subreddits
 
 #create list of subreddits to compare
 sv = author_vectors.rdd.keys().collect()

@@ -8,12 +8,8 @@
 	<form role="form" method='POST' action='/'>
 		<div>{{ form.userInput }}</div><br>
 		<div>
-		    {% for subfield in form.inputType %}
-		        <tr>
-		            <td> {{ subfield }}</td>
-		            <td> {{ subfield.label }}</td>
-		        </tr>
-		    {% endfor %}
+			{{ form.csrf_token }}
+			{{ form.inputType }}
 		</div><br>
 		<button type="submit">Submit</button>
 	</form>
