@@ -86,7 +86,7 @@ class CosineSim:
 
 
 #load subreddit vectors from S3
-#subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
+subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
 #create CosineSim object for comparison
