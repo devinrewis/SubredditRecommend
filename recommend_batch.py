@@ -138,11 +138,12 @@ def to_json(x):
     return [x[0], json.dumps(x[1])]
 
 def f(x):
-    rdb.hset('authortest', x[0], x[1])
+    z = x.collect()
+    rdb.hset('authortest', z[0], z[1])
     
 result = result.map(to_json)
 
-result.foreach(lambda x: rdb.hset('authortest', 'test', 'test'))
+result.foreach(f)
 #print(result.collect())
 
 #out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
