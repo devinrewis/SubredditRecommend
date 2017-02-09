@@ -29,6 +29,9 @@ import yaml
 sc = SparkContext(appName = "Recommend")
 sqlContext = SQLContext(sc)
 
+sc.addFile("settings.yaml")
+sc.addPyFile("distribute_redis.py")
+
 #load settings.yaml
 with open("settings.yaml", 'r') as stream:
     try:
@@ -129,8 +132,8 @@ def cosineSim(aVectors, bVectors):
 subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
-subreddit_vectors = subreddit_vectors.limit(2)
-author_vectors = author_vectors.limit(2)
+subreddit_vectors = subreddit_vectors
+author_vectors = author_vectors
 
 result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
@@ -143,9 +146,7 @@ def to_json(x):
     
 result = result.map(to_json)
 
-sc.addFile("settings.yaml")
-sc.addPyFile("distribute_redis.py")
-result.foreach(deliver_redis)
+result.foreach(deliver_author_redis)
 #print(result.collect())
 
 #out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
