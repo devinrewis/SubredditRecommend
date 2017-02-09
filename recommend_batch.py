@@ -143,7 +143,6 @@ def f(x):
 result = result.map(to_json)
 print(result.collect())
 #result.foreach(f)
-'''
 
 #out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
 #rdb.hset('authortest', out.collect()[0][0], out.collect[0][1])
