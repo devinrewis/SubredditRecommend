@@ -99,7 +99,7 @@ class CosineSim:
 
 def cos(row):
     try:
-        if [isinstance(x, numbers.Number) for x in row.a_vector] and [isinstance(x, numbers.Number) for x in row.b_vector]:
+        if all(v != 0.0 for v in row.a_vector) and all(v != 0.0 for v in row.b_vector):
             return [[row.b, (row.a_vector.dot(row.b_vector))/(row.a_vector.norm(2) * row.b_vector.norm(2))]]
     except:
         return [[row.b, 0]]
