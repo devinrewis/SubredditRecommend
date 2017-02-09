@@ -140,7 +140,7 @@ def f(x):
     accum.add(1)
 result.map(f)
 print("LOOK HERE: " + str(accum.value))
-'''
+
 
 out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
 rdb.hset('authortest', out.collect()[0][0], out.collect[0][1])
