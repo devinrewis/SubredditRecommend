@@ -131,9 +131,11 @@ subreddit_vectors = subreddit_vectors.limit(10)
 author_vectors = author_vectors.limit(10)
 
 result = cosineSim(author_vectors, subreddit_vectors)
-result = result.reduceByKey(add)
+result = result.reduceByKey(add).toDF(['author', 'recs'])
+result.show()
 
-result.map(lambda x: rdb.hset('authortest', x[0], x[1]))
+
+#result.map(lambda x: rdb.hset('authortest', x[0], x[1]))
 
 #result.map(lambda x: rdb.hset('authortest', x, rec_json))
 
