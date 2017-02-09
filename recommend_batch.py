@@ -143,7 +143,7 @@ author_vectors = author_vectors.limit(20)
 
 
 
-#result = cosineSim(author_vectors, subreddit_vectors)
+result = cosineSim(author_vectors, subreddit_vectors)
 #result = result.reduceByKey(add)
 
 
@@ -154,6 +154,8 @@ def to_json(x):
 #    rdb.hset('authortest', x[0], x[1])
     
 result = result.map(to_json)
+print(result.collect())
+
 
 #result.foreach(deliver_author_redis)
 
