@@ -117,7 +117,6 @@ def cosineSim(aVectors, bVectors):
                                           (row.a_vector.dot(row.b_vector))/
                                           (row.a_vector.norm(2) * row.b_vector.norm(2)))]]
                              )
-                             ####
     
     return results
     
@@ -130,7 +129,7 @@ subreddit_vectors = subreddit_vectors.limit(10)
 author_vectors = author_vectors.limit(10)
 
 result = cosineSim(author_vectors, subreddit_vectors)
-print(result.collect())
+print(result.reduceByKey(append).collect())
 
 #create CosineSim object for comparison
 #subredditCompare = CosineSim(subreddit_vectors)
