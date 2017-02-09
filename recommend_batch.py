@@ -115,9 +115,9 @@ def cosineSim(aVectors, bVectors):
     #similar = self.vectorSpace.rdd.mapValues(lambda b: (a.dot(b))/(a_mag * b.norm(2))) \
     #    .sortBy(lambda x: x[1], ascending=False) #sort values for output
     
-    results = vectors.rdd.map(lambda row: (row.a, [[row.b, 
+    results = vectors.rdd.map(lambda row: {'a': row.a, 'b': [[row.b, 
                                           (row.a_vector.dot(row.b_vector))/
-                                          (row.a_vector.norm(2) * row.b_vector.norm(2))]])
+                                          (row.a_vector.norm(2) * row.b_vector.norm(2))]]}
                              )
     
     return results
@@ -135,10 +135,10 @@ result = result.reduceByKey(add)
 
 
 def to_json(x):
-    return [x[0], json.dumps(x[1])]
+    return [x['a'], json.dumps(x['b'])]
 
 def f(x):
-    rdb.hset('authortest', x[0].lower(), to_json(x[1]))
+    rdb.hset('authortest', x['a'].lower(), to_json(x['b']))
     
 result = result.map(to_json)
 print(result.collect())
