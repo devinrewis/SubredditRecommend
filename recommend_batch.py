@@ -115,9 +115,9 @@ def cosineSim(aVectors, bVectors):
     #similar = self.vectorSpace.rdd.mapValues(lambda b: (a.dot(b))/(a_mag * b.norm(2))) \
     #    .sortBy(lambda x: x[1], ascending=False) #sort values for output
     
-    results = vectors.rdd.map(lambda row: {'a': row.a, 'b': [[row.b, 
+    results = vectors.rdd.map(lambda row: [row.a, [[row.b, 
                                           (row.a_vector.dot(row.b_vector))/
-                                          (row.a_vector.norm(2) * row.b_vector.norm(2))]]}
+                                          (row.a_vector.norm(2) * row.b_vector.norm(2))]]]
                              )
     
     return results
@@ -131,7 +131,7 @@ subreddit_vectors = subreddit_vectors.limit(10)
 author_vectors = author_vectors.limit(10)
 
 result = cosineSim(author_vectors, subreddit_vectors)
-result = result.reduceByKey(add).toDF(['author', 'recs'])
+result = result.reduceByKey(add).toDF(['author', 'value'])
 result.show()
 
 
