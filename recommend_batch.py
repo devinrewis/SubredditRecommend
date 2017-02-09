@@ -161,7 +161,7 @@ def to_json(x):
 result = result.map(to_json)
 
 
-result.foreach(deliver_author_redis)
+result.foreach(deliver_sub_redis)
 
 #print(result.collect())
 
