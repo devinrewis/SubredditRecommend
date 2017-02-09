@@ -138,7 +138,7 @@ def to_json(x):
     return [x[0], json.dumps(x[1])]
 
 def f(x):
-    rdb.hset('authortest', x[0], x[1]))
+    rdb.hset('authortest', x[0], x[1])
     
 result = result.map(to_json)
 
