@@ -133,7 +133,10 @@ author_vectors = author_vectors.limit(10)
 result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
-result.map(lambda x: rdb.hset('authortest', x[0].lower(), json.dumps(x[1])))
+out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
+print(out)
+
+#result.map(lambda x: rdb.hset('authortest', x[0].lower(), json.dumps(x[1])))
 
 #result.map(lambda x: rdb.hset('authortest', x, rec_json))
 
