@@ -143,8 +143,8 @@ author_vectors = author_vectors.limit(20)
 
 
 
-result = cosineSim(author_vectors, subreddit_vectors)
-result = result.reduceByKey(add)
+#result = cosineSim(author_vectors, subreddit_vectors)
+#result = result.reduceByKey(add)
 
 
 def to_json(x):
@@ -155,7 +155,7 @@ def to_json(x):
     
 result = result.map(to_json)
 
-result.foreach(deliver_author_redis)
+#result.foreach(deliver_author_redis)
 
 #print(result.collect())
 
