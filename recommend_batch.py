@@ -135,7 +135,7 @@ result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
 def to_json(x):
-    return {'a': x['a'], 'b': json.dumps(x['b'])}
+    return [x[0], json.dumps(x[1])]
 
 def f(x):
     rdb.hset('authortest', x['a'].lower(), to_json(x['b']))
