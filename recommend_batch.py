@@ -139,10 +139,10 @@ author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 subreddit_vectors = subreddit_vectors
 author_vectors = author_vectors
 
-print(subreddit_vectors.collect())
-'''
-result = cosineSim(author_vectors, subreddit_vectors)
-result = result.reduceByKey(add)
+
+
+result = cosineSim(author_vectors, subreddit_vectors).limit(20)
+result = result.reduceByKey(add).limit(20)
 
 def to_json(x):
     return [x[0], json.dumps(x[1])]
@@ -153,7 +153,7 @@ def to_json(x):
 result = result.map(to_json)
 
 result.foreach(deliver_author_redis)
-'''
+
 #print(result.collect())
 
 #out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
