@@ -133,17 +133,17 @@ author_vectors = author_vectors.limit(10)
 result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
-r = "failed"
+accum = sc.accumlator(0)
 
 def f(x):
     rdb.hset('authortest', x[0].lower(), json.dumps(x[1]))
-    r = "success"
-    
+    accum.add(1)
 result.map(f)
-print(r)
+print("LOOK HERE: " + str(accum.value))
+'''
 
 out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
-print(out.collect())
+rdb.hset('authortest', out.collect()[0][0], out.collect[0][1])
 
 #result.map(lambda x: rdb.hset('authortest', x[0].lower(), json.dumps(x[1])))
 
