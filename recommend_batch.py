@@ -96,6 +96,12 @@ class CosineSim:
         return similar
 '''
 
+def cos(Row row):
+    try:
+        return [[row.b, (row.a_vector.dot(row.b_vector))/(row.a_vector.norm(2) * row.b_vector.norm(2))]]
+    except:
+        return [[row.b, 0]]
+
 def cosineSim(aVectors, bVectors):
     #Rename columns
     oldColumns = aVectors.columns
@@ -119,11 +125,7 @@ def cosineSim(aVectors, bVectors):
     #similar = self.vectorSpace.rdd.mapValues(lambda b: (a.dot(b))/(a_mag * b.norm(2))) \
     #    .sortBy(lambda x: x[1], ascending=False) #sort values for output
     
-    results = vectors.rdd.map(lambda row: [row.a, [[row.b,  
-                                          (row.a_vector.dot(row.b_vector))/
-                                          (row.a_vector.norm(2) * row.b_vector.norm(2))]]
-                                          ]
-                             )
+    results = vectors.rdd.map(lambda row: [row.a, cos(row)])
     
     return results
     
