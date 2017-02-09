@@ -134,7 +134,7 @@ result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
 
-def to_json(x)
+def to_json(x):
     json.dumps(x)
 
 def f(x):
