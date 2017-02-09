@@ -20,6 +20,7 @@ from pyspark.ml.linalg import *
 from pyspark.ml.linalg import SparseVector, DenseVector, VectorUDT
 from pyspark.mllib.linalg.distributed import IndexedRowMatrix
 from operator import add
+from distribute_redis import *
 import redis
 import json
 import yaml
@@ -137,13 +138,14 @@ result = result.reduceByKey(add)
 def to_json(x):
     return [x[0], json.dumps(x[1])]
 
-def f(x):
-    z = x.collect()
-    rdb.hset('authortest', z[0], z[1])
+#def f(x):
+#    rdb.hset('authortest', x[0], x[1])
     
 result = result.map(to_json)
 
-result.foreach(f)
+sc.addFile("settings.yaml")
+sc.addPyFile("distribute_redis.py")
+result.foreach(deliver_redis)
 #print(result.collect())
 
 #out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
