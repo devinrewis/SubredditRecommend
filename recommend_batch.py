@@ -134,8 +134,6 @@ author_vectors = author_vectors.limit(2)
 result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
-print(result.collect())
-'''
 def to_json(x):
     return {'a': x['a'], 'b': json.dumps(x['b'])}
 
@@ -144,7 +142,7 @@ def f(x):
     
 result = result.map(to_json)
 print(result.collect())
-result.foreach(f)
+#result.foreach(f)
 '''
 
 #out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
