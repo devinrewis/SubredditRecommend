@@ -91,19 +91,31 @@ class CosineSim:
 '''
 
 def cosineSim(aVectors, bVectors):
-       #Rename columns
-       oldColumns = aVectors.columns
-       newColumns = ["a", "a_vector"]
-       aVectors = aVectors.withColumnRenamed(oldColumns[0], newColumns[0]).withColumnRenamed(oldColumns[1], newColumns[1])
-       
-       oldColumns = bVectors.columns
-       newColumns = ["b", "b_vector"]
-       bVectors = bVectors.withColumnRenamed(oldColumns[0], newColumns[0]).withColumnRenamed(oldColumns[1], newColumns[1])
-       ###
-       
-       vectors = aVectors.crossJoin(bVectors)
-       
-       return vectors
+    #Rename columns
+    oldColumns = aVectors.columns
+    newColumns = ["a", "a_vector"]
+    aVectors = aVectors.withColumnRenamed(oldColumns[0], newColumns[0]).withColumnRenamed(oldColumns[1], newColumns[1])
+
+    oldColumns = bVectors.columns
+    newColumns = ["b", "b_vector"]
+    bVectors = bVectors.withColumnRenamed(oldColumns[0], newColumns[0]).withColumnRenamed(oldColumns[1], newColumns[1])
+    ###
+
+    vectors = aVectors.crossJoin(bVectors)
+    #
+    #compare a with list of b values
+    # Formula:
+    #    a dot b
+    # -------------
+    #  ||a||*||b||
+    #
+    
+    #similar = self.vectorSpace.rdd.mapValues(lambda b: (a.dot(b))/(a_mag * b.norm(2))) \
+    #    .sortBy(lambda x: x[1], ascending=False) #sort values for output
+    
+    
+    return vectors.rdd
+    
 
 #load subreddit vectors from S3
 subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
@@ -113,7 +125,7 @@ subreddit_vectors = subreddit_vectors.limit(3)
 author_vectors = author_vectors.limit(3)
 
 result = cosineSim(author_vectors, subreddit_vectors)
-result.show()
+print(result.collect())
 
 #create CosineSim object for comparison
 #subredditCompare = CosineSim(subreddit_vectors)
