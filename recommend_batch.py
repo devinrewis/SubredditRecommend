@@ -136,13 +136,13 @@ def cosineSim(aVectors, bVectors):
 subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
-subreddit_vectors = subreddit_vectors
-author_vectors = author_vectors
+subreddit_vectors = subreddit_vectors.limit(20)
+author_vectors = author_vectors.limit(20)
 
 
 
-result = cosineSim(author_vectors, subreddit_vectors).limit(20)
-result = result.reduceByKey(add).limit(20)
+result = cosineSim(author_vectors, subreddit_vectors)
+result = result.reduceByKey(add)
 
 def to_json(x):
     return [x[0], json.dumps(x[1])]
