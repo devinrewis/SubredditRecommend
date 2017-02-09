@@ -143,8 +143,8 @@ def cosineSim(aVectors, bVectors):
 subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
-subreddit_vectors = subreddit_vectors.limit(100)
-author_vectors = author_vectors.limit(100)
+subreddit_vectors = subreddit_vectors.limit(1000)
+author_vectors = author_vectors.limit(1000)
 
 
 
