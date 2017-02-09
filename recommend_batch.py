@@ -138,12 +138,12 @@ accum = sc.accumulator(0)
 def f(x):
     rdb.hset('authortest', x[0].lower(), json.dumps(x[1]))
     accum.add(1)
-result.map(f)
+result.foreach(accum.add(1))
 print("LOOK HERE: " + str(accum.value))
 
 
 out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
-rdb.hset('authortest', out.collect()[0][0], out.collect[0][1])
+#rdb.hset('authortest', out.collect()[0][0], out.collect[0][1])
 
 #result.map(lambda x: rdb.hset('authortest', x[0].lower(), json.dumps(x[1])))
 
