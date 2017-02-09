@@ -96,7 +96,7 @@ class CosineSim:
         return similar
 '''
 
-def cos(Row row):
+def cos(row):
     try:
         return [[row.b, (row.a_vector.dot(row.b_vector))/(row.a_vector.norm(2) * row.b_vector.norm(2))]]
     except:
