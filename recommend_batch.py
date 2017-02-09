@@ -99,7 +99,7 @@ class CosineSim:
 
 def cos(row):
     try:
-        if all(v != 0.0 for v in row.a_vector) and all(v != 0.0 for v in row.b_vector):
+        if all(v != 0.0 for v in row.a_vector.toArray()) and all(v != 0.0 for v in row.b_vector.toArray()):
             return [[row.b, (row.a_vector.dot(row.b_vector))/(row.a_vector.norm(2) * row.b_vector.norm(2))]]
     except:
         return [[row.b, 0]]
@@ -143,6 +143,7 @@ author_vectors = author_vectors.limit(20)
 
 result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
+
 
 def to_json(x):
     return [x[0], json.dumps(x[1])]
