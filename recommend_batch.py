@@ -133,9 +133,14 @@ author_vectors = author_vectors.limit(10)
 result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
+r = "failed"
+
 def f(x):
     rdb.hset('authortest', x[0].lower(), json.dumps(x[1]))
+    r = "success"
+    
 result.map(f)
+print(r)
 
 out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
 print(out.collect())
