@@ -13,4 +13,4 @@ def deliver_author_redis(x):
     rdb.hset('authortest2', x[0].lower(), x[1])
 
 def deliver_sub_redis(x):
-    rdb.hset('subreddit', x[0].lower(), x[1])
+    rdb.hset('subreddittest', x[0].lower(), x[1])
