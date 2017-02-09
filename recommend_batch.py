@@ -135,12 +135,13 @@ result = result.reduceByKey(add)
 
 
 def to_json(x):
-    json.dumps(x)
+    return json.dumps(x[1])
 
 def f(x):
     rdb.hset('authortest', x[0].lower(), to_json(x[1]))
     
-result.foreach(f)
+result = result.map(to_json)
+print(result.collect())
 
 
 #out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
