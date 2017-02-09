@@ -129,7 +129,7 @@ subreddit_vectors = subreddit_vectors.limit(10)
 author_vectors = author_vectors.limit(10)
 
 result = cosineSim(author_vectors, subreddit_vectors)
-print(result.reduceByKey(append).collect())
+print(result.reduceByKey(union).collect())
 
 #create CosineSim object for comparison
 #subredditCompare = CosineSim(subreddit_vectors)
