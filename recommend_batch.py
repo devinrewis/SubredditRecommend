@@ -117,6 +117,7 @@ def cosineSim(aVectors, bVectors):
                                           (row.a_vector.dot(row.b_vector))/
                                           (row.a_vector.norm(2) * row.b_vector.norm(2))]
                              )
+                             ####
     
     return results
     
