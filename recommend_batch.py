@@ -134,7 +134,7 @@ result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
 out = result.map(lambda x: [x[0].lower(), json.dumps(x[1])])
-print(out)
+print(out.collect())
 
 #result.map(lambda x: rdb.hset('authortest', x[0].lower(), json.dumps(x[1])))
 
