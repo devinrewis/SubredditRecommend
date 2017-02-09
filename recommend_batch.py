@@ -141,14 +141,14 @@ def cosineSim(aVectors, bVectors):
 
 #load subreddit vectors from S3
 subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
-#author_vectors = sqlContext.read.parquet(settings['author-vectors'])
+author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
 subreddit_vectors = subreddit_vectors
-#author_vectors = author_vectors
+author_vectors = author_vectors
 
 
 
-result = cosineSim(subreddit_vectors, subreddit_vectors)
+result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
 
