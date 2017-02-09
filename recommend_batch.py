@@ -133,7 +133,7 @@ author_vectors = author_vectors.limit(10)
 result = cosineSim(author_vectors, subreddit_vectors)
 result = result.reduceByKey(add)
 
-accum = sc.accumlator(0)
+accum = sc.accumulator(0)
 
 def f(x):
     rdb.hset('authortest', x[0].lower(), json.dumps(x[1]))
