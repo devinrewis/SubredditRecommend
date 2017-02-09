@@ -18,6 +18,7 @@ from pyspark.ml.feature import *
 from pyspark.ml.linalg import *
 from pyspark.ml.linalg import SparseVector, DenseVector, VectorUDT
 from pyspark.mllib.linalg.distributed import IndexedRowMatrix
+from operator import add
 import redis
 import json
 import yaml
