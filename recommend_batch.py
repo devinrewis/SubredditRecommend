@@ -143,8 +143,8 @@ def cosineSim(aVectors, bVectors):
 subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors = sqlContext.read.parquet(settings['author-vectors'])
 
-subreddit_vectors = subreddit_vectors
-author_vectors = author_vectors
+#subreddit_vectors = subreddit_vectors
+#author_vectors = author_vectors
 
 
 
@@ -161,7 +161,7 @@ def to_json(x):
 result = result.map(to_json)
 
 
-result.foreach(deliver_sub_redis)
+result.foreach(deliver_author_redis)
 
 #print(result.collect())
 
