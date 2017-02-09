@@ -135,7 +135,7 @@ result = result.reduceByKey(add)
 
 
 def to_json(x):
-    return json.dumps(x[1])
+    return [x[0], json.dumps(x[1])]
 
 def f(x):
     rdb.hset('authortest', x[0].lower(), to_json(x[1]))
