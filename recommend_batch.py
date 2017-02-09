@@ -24,6 +24,7 @@ from distribute_redis import *
 import redis
 import json
 import yaml
+import numbers
 
 #create spark context and SQL context
 sc = SparkContext(appName = "Recommend")
@@ -98,7 +99,8 @@ class CosineSim:
 
 def cos(row):
     try:
-        return [[row.b, (row.a_vector.dot(row.b_vector))/(row.a_vector.norm(2) * row.b_vector.norm(2))]]
+        if [isinstance(x, numbers.Number) for x in row.a_vector] and [isinstance(x, numbers.Number) for x in row.b_vector]:
+            return [[row.b, (row.a_vector.dot(row.b_vector))/(row.a_vector.norm(2) * row.b_vector.norm(2))]]
     except:
         return [[row.b, 0]]
 
