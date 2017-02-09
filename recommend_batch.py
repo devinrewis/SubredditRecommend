@@ -159,10 +159,9 @@ def to_json(x):
 #    rdb.hset('authortest', x[0], x[1])
     
 result = result.map(to_json)
-print(result.collect())
 
 
-#result.foreach(deliver_author_redis)
+result.foreach(deliver_author_redis)
 
 #print(result.collect())
 
