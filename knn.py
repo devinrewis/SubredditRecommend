@@ -40,11 +40,12 @@ author_vectors = author_vectors.select('vector').rdd.map(lambda row: row.vector)
 #vectors = subreddit_vectors.union(author_vectors)
 
 #local_vecs = vectors.collect()
+local_sub_vecs = subreddit_vectors.collect()
 
 lshf = LSHForest(random_state=42)
 
 #lshf.fit(local_vecs)
-lshf.fit(subreddit_vectors)
+lshf.fit(local_sub_vecs)
 
 #distances, indices = lshf.kneighbors(X_test, n_neighbors=50)
 
