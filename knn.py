@@ -13,6 +13,7 @@ from pyspark.mllib.linalg.distributed import IndexedRowMatrix
 from operator import add
 from distribute_redis import *
 from sklearn.neighbors import LSHForest
+import numpy as np
 
 #create spark context and SQL context
 sc = SparkContext(appName = "Recommend")
@@ -42,7 +43,7 @@ X_test = [0.45051485,  0.50801887, -0.07704632,  0.22868334, -0.27106896, 0.3336
 
 local_vecs = vectors.collect()
 print(local_vecs)
-local_vecs.reshape(-1,1)
+local_vecs = np.array(local_vecs).reshape(-1,1)
 print(local_vecs)
 
 lshf = LSHForest(random_state=42)
