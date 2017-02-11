@@ -38,11 +38,18 @@ author_vectors = author_vectors.select('vector').rdd.map(lambda row: row.vector.
 
 vectors = subreddit_vectors.union(author_vectors)
 
-print(vectors.collect())
+X_test = [0.45051485,  0.50801887, -0.07704632,  0.22868334, -0.27106896, 0.33362839,  0.45018876,  0.37479838]
 
+local_vecs = vectors.collect()
 
+lshf = LSHForest(random_state=42)
 
+lshf.fit(local_vecs)
 
+distances, indices = lshf.kneighbors(X_test, n_neighbors=2)
+
+print(distances)
+print(indices)
 
 
 
