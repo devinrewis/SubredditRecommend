@@ -31,26 +31,26 @@ with open("settings.yaml", 'r') as stream:
 
 rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
 
-subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors'])
-author_vectors = sqlContext.read.parquet(settings['author-vectors'])
+subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors']).limit(10)
+author_vectors = sqlContext.read.parquet(settings['author-vectors']).limit(10)
 
 subreddit_vectors = subreddit_vectors.select('vector').rdd.map(lambda row: row.vector)
 author_vectors = author_vectors.select('vector').rdd.map(lambda row: row.vector)
 
-vectors = subreddit_vectors.union(author_vectors)
+#vectors = subreddit_vectors.union(author_vectors)
 
-X_test = [0.45051485,  0.50801887, -0.07704632,  0.22868334, -0.27106896, 0.33362839,  0.45018876,  0.37479838]
-
-local_vecs = vectors.collect()
+#local_vecs = vectors.collect()
 
 lshf = LSHForest(random_state=42)
 
-lshf.fit(local_vecs)
+#lshf.fit(local_vecs)
+lshf.fit(subreddit_vectors)
 
-distances, indices = lshf.kneighbors(X_test, n_neighbors=20)
+#distances, indices = lshf.kneighbors(X_test, n_neighbors=50)
 
-print(distances)
-print(indices)
+results = subreddit_vectors.map(lambda x: lshf.kneighbors(x, n_neighbors=50)
+
+print(results.collect())
 
 
 
