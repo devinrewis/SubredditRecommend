@@ -48,7 +48,7 @@ lshf.fit(subreddit_vectors)
 
 #distances, indices = lshf.kneighbors(X_test, n_neighbors=50)
 
-results = subreddit_vectors.map(lambda x: lshf.kneighbors(x, n_neighbors=50)
+results = subreddit_vectors.map(lambda x: lshf.kneighbors(x, n_neighbors=50))
 
 print(results.collect())
 
