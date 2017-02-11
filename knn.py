@@ -49,7 +49,7 @@ lshf.fit(local_sub_vecs)
 
 #distances, indices = lshf.kneighbors(X_test, n_neighbors=50)
 
-results = subreddit_vectors_df.rdd.map(lambda x: lshf.kneighbors(x.vectors, n_neighbors=50))
+results = subreddit_vectors_df.rdd.map(lambda x: lshf.kneighbors(x.vector, n_neighbors=50))
 
 print(results.collect())
 
