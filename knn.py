@@ -41,6 +41,9 @@ vectors = subreddit_vectors.union(author_vectors)
 X_test = [0.45051485,  0.50801887, -0.07704632,  0.22868334, -0.27106896, 0.33362839,  0.45018876,  0.37479838]
 
 local_vecs = vectors.collect()
+print(local_vecs)
+local_vecs.reshape(-1,1)
+print(local_vecs)
 
 lshf = LSHForest(random_state=42)
 
