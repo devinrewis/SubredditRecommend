@@ -34,8 +34,8 @@ rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
 subreddit_vectors_df = sqlContext.read.parquet(settings['subreddit-vectors']).limit(10)
 author_vectors_df = sqlContext.read.parquet(settings['author-vectors']).limit(10)
 
-subreddit_vectors = subreddit_vectors.select('vector').rdd.map(lambda row: row.vector)
-author_vectors = author_vectors.select('vector').rdd.map(lambda row: row.vector)
+subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
+author_vectors = author_vectors_df.select('vector').rdd.map(lambda row: row.vector)
 
 #vectors = subreddit_vectors.union(author_vectors)
 
