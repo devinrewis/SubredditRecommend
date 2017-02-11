@@ -31,8 +31,8 @@ with open("settings.yaml", 'r') as stream:
 
 rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
 
-subreddit_vectors = sqlContext.read.parquet(settings['subreddit-vectors']).limit(10)
-author_vectors = sqlContext.read.parquet(settings['author-vectors']).limit(10)
+subreddit_vectors_df = sqlContext.read.parquet(settings['subreddit-vectors']).limit(10)
+author_vectors_df = sqlContext.read.parquet(settings['author-vectors']).limit(10)
 
 subreddit_vectors = subreddit_vectors.select('vector').rdd.map(lambda row: row.vector)
 author_vectors = author_vectors.select('vector').rdd.map(lambda row: row.vector)
@@ -49,7 +49,7 @@ lshf.fit(local_sub_vecs)
 
 #distances, indices = lshf.kneighbors(X_test, n_neighbors=50)
 
-results = subreddit_vectors.map(lambda x: lshf.kneighbors(x, n_neighbors=50))
+results = subreddit_vectors_df.rdd.map(lambda x: lshf.kneighbors(x.vectors, n_neighbors=50))
 
 print(results.collect())
 
