@@ -31,6 +31,11 @@ with open("settings.yaml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
+#get a list of files contained in S3 bucket
+client = boto3.client('s3')
+s3ObjectList = client.list_objects_v2(Bucket='dr-reddit-comment-data')
+s3ObjectList = s3ObjectList['Contents']
+
 def fetch_data(s3key):
     file = sq.read.json("s3n://dr-reddit-comment-data/" + str(s3key))
     file.write.mode('append').format("orc").save("settings['orc-data']")
