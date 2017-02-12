@@ -43,13 +43,7 @@ author_vectors = author_vectors_df.select('vector').rdd.map(lambda row: row.vect
 local_sub_vecs = subreddit_vectors.collect()
 local_sub_keys = subreddit_vectors_df.collect()
 
-local_sub_vecs = local_sub_vecs[:20]
-local_sub_keys = local_sub_keys[:20]
 
-print(local_sub_vecs)
-print(local_sub_keys)
-
-'''
 lshf = LSHForest(random_state=42)
 
 #lshf.fit(local_vecs)
@@ -60,15 +54,15 @@ lshf.fit(local_sub_vecs)
 s_results = subreddit_vectors_df.rdd.map(lambda x: [x.subreddit, lshf.kneighbors(x.vector, n_neighbors=100)])
 a_results = author_vectors_df.rdd.map(lambda x: [x.author, lshf.kneighbors(x.vector, n_neighbors=100)])
 
-s_results = s_results.map(lambda x: [x[0], [lo)
-a_results = a_results.mapValues(deliver_author_redis)
+s_results = s_results.map(lambda x: [x[0], [local_sub_keys[r], x[1][r] for r in x[2]])
+#a_results = a_results.mapValues(deliver_author_redis)
 
 
 print(s_results.take(10))
-print(a_results.take(10))
+#print(a_results.take(10))
 
 
-'''
+
 
 
 
