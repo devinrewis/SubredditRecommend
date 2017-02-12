@@ -38,7 +38,7 @@ s3ObjectList = s3ObjectList['Contents']
 
 def fetch_data(s3key):
     file = sq.read.json(settings['json-data'] + str(s3key))
-    file.write.mode('append').format("orc").save(settings['orc-data'])
+    file.write.mode('append').format("orc").save(settings['orc-data'] + str(s3key))
 
 fileList = map(lambda d: d.get('Key'), s3ObjectList)
 map(fetch_data, fileList)
