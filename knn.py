@@ -36,15 +36,16 @@ rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
 subreddit_vectors_df = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors_df = sqlContext.read.parquet(settings['author-vectors'])
 
-#create RDDs that contain only vectors (no keys)
+#create RDDs that contain only vectors
 subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
 author_vectors = author_vectors_df.select('vector').rdd.map(lambda row: row.vector)
 
 #localize vectors for use with LSHForest
 local_sub_vecs = subreddit_vectors.collect()
 
-#localize subreddit rdd so that names can be found later
-local_sub_names = subreddit_vectors_df.collect()
+#create a list of subreddit names so they can be accessed later
+subreddit_names = subreddit_vectors_df.select('subreddit').rdd.map(lambda row: row.subreddit)
+local_sub_names = subreddit_names.collect()
 
 #train LSHForest to vector space
 #only subreddits need to be hashed, since results will only be subreddits
