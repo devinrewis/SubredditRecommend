@@ -29,32 +29,37 @@ with open("settings.yaml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
+#create connector to Redis
 rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
 
+#read in vector data from S3
 subreddit_vectors_df = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors_df = sqlContext.read.parquet(settings['author-vectors'])
 
+#create RDDs that contain only vectors (no keys)
 subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
 author_vectors = author_vectors_df.select('vector').rdd.map(lambda row: row.vector)
 
-#vectors = subreddit_vectors.union(author_vectors)
-
-#local_vecs = vectors.collect()
+#localize vectors for use with LSHForest
 local_sub_vecs = subreddit_vectors.collect()
-local_sub_keys = subreddit_vectors_df.collect()
 
+#localize subreddit rdd so that names can be found later
+local_sub_names = subreddit_vectors_df.collect()
 
+#train LSHForest to vector space
+#only subreddits need to be hashed, since results will only be subreddits
 lshf = LSHForest(random_state=42)
-
-#lshf.fit(local_vecs)
 lshf.fit(local_sub_vecs)
 
-#distances, indices = lshf.kneighbors(X_test, n_neighbors=50)
-
+#find allpairs similarity
 s_results = subreddit_vectors_df.rdd.map(lambda x: [x.subreddit, lshf.kneighbors(x.vector, n_neighbors=100)])
 a_results = author_vectors_df.rdd.map(lambda x: [x.author, lshf.kneighbors(x.vector, n_neighbors=100)])
 
-s_results = s_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1].tolist()])
+#convert ugly output structure to [key, [sub cosine], [sub index]]
+s_results = s_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
+a_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
+
+s_results = s_results.map(lambda x: [x[0], [[local_sub_names[k], x[1][k]] for k in x[2]]])
 
 
 print(s_results.take(10))
