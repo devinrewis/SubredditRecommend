@@ -37,8 +37,8 @@ s3ObjectList = client.list_objects_v2(Bucket='dr-reddit-comment-data')
 s3ObjectList = s3ObjectList['Contents']
 
 def fetch_data(s3key):
-    file = sq.read.json("s3n://dr-reddit-comment-data/" + str(s3key))
-    file.write.mode('append').format("orc").save("settings['orc-data']")
+    file = sq.read.json(settings['json-data'] + str(s3key))
+    file.write.mode('append').format("orc").save(settings['orc-data'])
 
 fileList = map(lambda d: d.get('Key'), s3ObjectList)
 map(fetch_data, fileList)
