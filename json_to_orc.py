@@ -15,6 +15,8 @@ from pyspark.sql import SparkSession
 from boto.s3.connection import S3Connection
 import json
 import yaml
+import boto3
+import botocore
 
 #create Spark context and Spark session
 sc = SparkContext(appName = "S3 JSON to ORC")
@@ -29,9 +31,12 @@ with open("settings.yaml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
+def fetch_data(s3key):
+    file = sq.read.json("s3n://dr-reddit-comment-data/" + str(s3key))
+    file.write.mode('append').format("orc").save("settings['orc-data']")
 
-comments = sq.read.json(settings['json-data'])
-comments.write.mode('append').format("orc").save(settings['orc-data'])
+fileList = map(lambda d: d.get('Key'), s3ObjectList)
+map(fetch_data, fileList)
 
 
 
