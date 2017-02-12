@@ -59,7 +59,8 @@ a_results = author_vectors_df.rdd.map(lambda x: [x.author, lshf.kneighbors(x.vec
 s_results = s_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
 a_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
 
-s_results = s_results.map(lambda x: [x[0], [[local_sub_names[k], x[1][k]] for k in x[2]]])
+
+s_results = s_results.map(lambda x: [x[0], [[local_sub_names[x[2][k]], x[1][k]] for k in x[2]]])
 
 
 print(s_results.take(10))
