@@ -66,10 +66,12 @@ remover = StopWordsRemover(inputCol="words", outputCol="filtered", stopWords=sWo
 comments = remover.transform(comments)
 
 #parameters for word2vec model
-word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, inputCol="filtered", outputCol="result")
+word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings['numPartitions'], inputCol="filtered", outputCol="result")
 
 #train the model against comment data
 model = word2vec.fit(comments)
+
+
 
 #use for debugging, show resulting dataframe
 #should appear as dataframe containing words and vectors
