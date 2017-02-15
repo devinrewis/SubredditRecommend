@@ -87,7 +87,9 @@ for author in testList:
         .reduceByKey(lambda x, y: x + y) \
         .mapValues(lambda x: DenseVector(x)) \
         .toDF(['author', 'vector'])
-        
+    
+    author_vectors_df.show()
+    
     #get vector for tested author
     author_test_vector = author_vectors_df.filter(author_vectors_df.author == author['author'])
     author_test_vector.show()
