@@ -118,7 +118,8 @@ for author in testList:
     a_results = [a_results[0][0].tolist(), a_results[1][0].tolist()]
     print(a_results)
     
-    a_results = map(lambda x: [[local_sub_names[x[1][k]], 1 - x[0][k]] for k in range(0, len(x[1]))], a_results)
+    #a_results = map(lambda x: [local_sub_names[x[1][k]], 1 - x[0][k]], a_results)
+    a_results = [[local_sub_names[a_results[1][x]], 1 - a_results[0][x]] for x in range(0, len(a_results[0])]
     
     #create list of recommendations
     #author_rec_list = author_results.collect()
