@@ -63,6 +63,7 @@ word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings
 
 #run test for each author individually
 for author in testList:
+    print(author)
     #filter out comments from author's top subreddit
     commentTest = comments.filter(comments.author != author.author and comments.subreddit != author.subreddit)
     
