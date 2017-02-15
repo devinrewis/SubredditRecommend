@@ -37,12 +37,9 @@ comments = comments.filter(comments.author != "[deleted]")
 commentCounts = comments.select(comments['author'], comments['subreddit'])
 commentCounts = commentCounts.groupby('author', 'subreddit').count().sort('count', ascending=False)
 
-commentCounts.show()
-
-
-######create list of authors to analyze
-testList = commentCounts.take(100)
-testList = [testList[1]]
+#create list of authors to analyze
+testList = commentCounts.take(10)
+#testList = [testList[1]]
 
 #tokenize comments for processing
 tokenizer = RegexTokenizer(inputCol="body", outputCol="words") \
@@ -127,7 +124,7 @@ for author in testList:
     #check to see where top sub occurs in recommendation
     for x in range(0, len(a_results)):
         if a_results[x][0] == author['subreddit']:
-            scores.append(x)
+            scores.append(x+1)
             
 print(scores)
 
