@@ -34,7 +34,7 @@ comments = comments.filter(comments.author != "[deleted]")
 
 #count commments to find top posters and their top subreddit
 commentCounts = comments.select(comments['author'], comments['subreddit'])
-commentCounts = commentCounts.groupby('author', 'subreddit').count().sort('count')
+commentCounts = commentCounts.groupby('author', 'subreddit').count().sort('count', ascending=False)
 
 commentCounts.show()
 
