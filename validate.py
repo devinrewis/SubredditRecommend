@@ -65,7 +65,6 @@ for author in testList:
     print(author)
     #filter out comments from author's top subreddit
     commentTest = comments.filter(((comments.author == author['author']) & (comments.subreddit != author['subreddit'])) | (comments.author != author['author']))
-    #commentTest = comments
     
     #train word2vec on filtered subset
     model = word2vec.fit(commentTest)
@@ -93,9 +92,9 @@ for author in testList:
     
     #get vector for tested author
     author_test_vector = author_vectors_df.filter(author_vectors_df.author == author['author'])
-    author_test_vector.show()
-    #author_test_vector = author_test_vector.collect()
-    #print(author_test_vector)
+    
+    author_test_vector = author_test_vector.collect()
+    print(author_test_vector)
     
     '''
     #create RDDs that contain only vectors
