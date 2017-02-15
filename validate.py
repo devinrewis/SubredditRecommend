@@ -114,18 +114,17 @@ for author in testList:
     #find allpairs similarity
     a_results = list(lshf.kneighbors(author_test_vector['vector'], n_neighbors=100))
     
+    #convert ugly output structure to [[sub cosine], [sub index]]
     a_results = [a_results[0][0].tolist(), a_results[1][0].tolist()]
     print(a_results)
-    #convert ugly output structure to [key, [sub cosine], [sub index]]
-    #author_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
     
-    #a_results = map(lambda x: [[local_sub_names[x[1][0][k]], 1 - x[0][0][k]] for k in range(0, len(x[1][0]))], a_results)
+    a_results = map(lambda x: [[local_sub_names[x[1][k]], 1 - x[0][k]] for k in range(0, len(x[1]))], a_results)
     
     #create list of recommendations
     #author_rec_list = author_results.collect()
     
     
-    #print(a_results)
+    print(a_results)
     #check to see where top sub occurs in recommendation
 
 
