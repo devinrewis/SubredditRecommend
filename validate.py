@@ -112,10 +112,12 @@ for author in testList:
     lshf.fit(local_sub_vecs)
 
     #find allpairs similarity
-    a_results = lshf.kneighbors(author_test_vector['vector'], n_neighbors=100)
-
+    a_results = list(lshf.kneighbors(author_test_vector['vector'], n_neighbors=100))
+    print(a_results)
     #convert ugly output structure to [key, [sub cosine], [sub index]]
     #author_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
+    
+    a_results = map(lambda x: [x[0], [[local_sub_names[x[2][k]], 1 - x[1][k]] for k in range(0, len(x[2]))]], a_results)
     
     #create list of recommendations
     #author_rec_list = author_results.collect()
