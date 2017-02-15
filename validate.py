@@ -90,8 +90,9 @@ for author in testList:
         
     #get vector for tested author
     author_test_vector = author_vectors_df.filter(author_vectors_df.author == author['author'])
-    author_test_vector = author_test_vector.collect()
-    print(author_test_vector)
+    author_test_vector.show()
+    #author_test_vector = author_test_vector.collect()
+    #print(author_test_vector)
     
     '''
     #create RDDs that contain only vectors
