@@ -34,6 +34,13 @@ sqlContext = SQLContext(sc)
 hiveContext = HiveContext(sc)
 hiveContext.setConf("spark.sql.orc.filterPushdown", "true")
 
+#load settings.yaml
+with open("settings.yaml", 'r') as stream:
+    try:
+        settings = yaml.load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
+
 comments = hiveContext.read.format("orc").load(settings['orc-data'])
 
 #select author & body columns
