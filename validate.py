@@ -5,6 +5,7 @@ from pyspark.sql import SQLContext
 from pyspark.sql import HiveContext
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
+from pyspark.ml.feature import *
 from pyspark.ml.linalg import DenseVector
 from sklearn.neighbors import LSHForest
 import numpy as np
