@@ -42,8 +42,7 @@ commentCounts.show()
 
 ######create list of authors to analyze
 testList = commentCounts.take(100)
-testList = testList[1]
-print(testList)
+testList = [testList[1]]
 
 #tokenize comments for processing
 tokenizer = RegexTokenizer(inputCol="body", outputCol="words") \
