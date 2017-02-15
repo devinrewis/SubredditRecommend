@@ -59,6 +59,8 @@ comments = remover.transform(comments)
 #parameters for word2vec model
 word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings['numPartitions'], inputCol="filtered", outputCol="result")
 
+#store scores for our validation
+scores = []
 
 #run test for each author individually
 for author in testList:
@@ -116,18 +118,18 @@ for author in testList:
     
     #convert ugly output structure to [[sub cosine], [sub index]]
     a_results = [a_results[0][0].tolist(), a_results[1][0].tolist()]
-    print(a_results)
     
     #a_results = map(lambda x: [local_sub_names[x[1][k]], 1 - x[0][k]], a_results)
     a_results = [[local_sub_names[a_results[1][x]], 1 - a_results[0][x]] for x in range(0, len(a_results[0]))]
     
-    #create list of recommendations
-    #author_rec_list = author_results.collect()
-    
-    
     print(a_results)
+    
     #check to see where top sub occurs in recommendation
-
+    for x in range(0, len(a_results)):
+        if a_results[x][0] == author['subreddit']:
+            scores.append(x)
+            
+print(scores)
 
 
 
