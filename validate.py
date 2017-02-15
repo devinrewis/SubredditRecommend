@@ -114,7 +114,7 @@ for author in testList:
     #find allpairs similarity
     a_results = list(lshf.kneighbors(author_test_vector['vector'], n_neighbors=100))
     
-    a_results = [a_results[0][0][0], a_results[1][0][0]]
+    a_results = [a_results[0][0].tolist(), a_results[1][0].tolist()]
     print(a_results)
     #convert ugly output structure to [key, [sub cosine], [sub index]]
     #author_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
