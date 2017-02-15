@@ -38,10 +38,13 @@ commentCounts = commentCounts.groupby('author', 'subreddit').count().sort('count
 
 commentCounts.show()
 
-'''
-######create list of authors to analyze
-testList = []
 
+######create list of authors to analyze
+testList = commentCounts.take(100)
+print(testList)
+
+
+'''
 #tokenize comments for processing
 tokenizer = RegexTokenizer(inputCol="body", outputCol="words") \
             .setPattern("[\\W_]+") \
