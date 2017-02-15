@@ -1,0 +1,121 @@
+from pyspark import SparkContext
+from pyspark import RDD
+from pyspark.sql import SparkSession
+from pyspark.sql import SQLContext
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+from pyspark.ml.linalg import DenseVector
+from sklearn.neighbors import LSHForest
+import numpy as np
+import yaml
+
+sc = SparkContext(appName = "Validate")
+sqlContext = SQLContext(sc)
+
+hiveContext = HiveContext(sc)
+hiveContext.setConf("spark.sql.orc.filterPushdown", "true")
+
+#load settings.yaml
+with open("settings.yaml", 'r') as stream:
+    try:
+        settings = yaml.load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
+        
+        
+comments = hiveContext.read.format("orc").load(settings['orc-data'])
+
+#select author, subreddit & body columns
+comments = comments.select(comments['author'], comments['subreddit'], comments['body'])
+
+#filter out authors who've deleted their accounts
+comments = comments.filter(comments.author != "[deleted]")
+
+#count commments to find top posters and their top subreddit
+commentCounts = comments.select(comments['author'], comments['subreddit'])
+commentCounts = commentCounts.groupby('author', 'subreddit').count()
+
+'''
+######create list of authors to analyze
+testList = []
+
+#tokenize comments for processing
+tokenizer = RegexTokenizer(inputCol="body", outputCol="words") \
+            .setPattern("[\\W_]+") \
+            .setMinTokenLength(4)
+comments = tokenizer.transform(comments)
+
+#filter stop words from comments
+stopWordFile = open(settings['stop-word-file'])
+sWords = stopWordFile.read().split('\n')
+remover = StopWordsRemover(inputCol="words", outputCol="filtered", stopWords=sWords)
+comments = remover.transform(comments)
+
+#parameters for word2vec model
+word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings['numPartitions'], inputCol="filtered", outputCol="result")
+
+
+#run test for each author individually
+for author in testList:
+    #filter out comments from author's top subreddit
+    commentTest = comments.filter(comments.author != author.topSub)
+    
+    #train word2vec on filtered subset
+    model = word2vec.fit(commentTest)
+    
+    
+    #create vectors from word2vec network
+    subreddit_vectors = model.transform(commentTest)
+    author_vectors = subreddit_vectors
+
+    subreddit_vectors = subreddit_vectors.select('subreddit', 'result')
+    author_vectors = author_vectors.select('author', 'result')
+
+    #combine vectors for subreddits
+    subreddit_vectors_df = subreddit_vectors.rdd.mapValues(lambda v: v.toArray()) \
+        .reduceByKey(lambda x, y: x + y) \
+        .mapValues(lambda x: DenseVector(x)) \
+        .toDF(['subreddit', 'vector'])
+        
+    #combine vectors for authors
+    author_vectors_df = author_vectors.rdd.mapValues(lambda v: v.toArray()) \
+        .reduceByKey(lambda x, y: x + y) \
+        .mapValues(lambda x: DenseVector(x)) \
+        .toDF(['author', 'vector'])
+    
+    #create RDDs that contain only vectors
+    subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
+    author_vectors = author_vectors_df.select('vector').rdd.map(lambda row: row.vector)
+
+    #localize vectors for use with LSHForest
+    local_sub_vecs = subreddit_vectors.collect()
+
+    #create a list of subreddit names so they can be accessed later
+    subreddit_names = subreddit_vectors_df.select('subreddit').rdd.map(lambda row: row.subreddit)
+    local_sub_names = subreddit_names.collect()
+
+    #train LSHForest to vector space
+    #only subreddits need to be hashed, since results will only be subreddits
+    lshf = LSHForest(random_state=42)
+    lshf.fit(local_sub_vecs)
+
+    #find allpairs similarity
+    lshf.kneighbors(author.topSub, n_neighbors=100)
+
+    #convert ugly output structure to [key, [sub cosine], [sub index]]
+    author_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
+    
+    #check to see where top sub occurs in recommendation
+
+'''
+
+
+
+
+
+
+
+
+
+
+
