@@ -41,10 +41,9 @@ commentCounts.show()
 
 ######create list of authors to analyze
 testList = commentCounts.take(100)
-print(testList)
+testList = testList[1]
 
 
-'''
 #tokenize comments for processing
 tokenizer = RegexTokenizer(inputCol="body", outputCol="words") \
             .setPattern("[\\W_]+") \
@@ -64,7 +63,7 @@ word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings
 #run test for each author individually
 for author in testList:
     #filter out comments from author's top subreddit
-    commentTest = comments.filter(comments.author != author.topSub)
+    commentTest = comments.filter(comments.author != author.subreddit)
     
     #train word2vec on filtered subset
     model = word2vec.fit(commentTest)
@@ -106,14 +105,17 @@ for author in testList:
     lshf.fit(local_sub_vecs)
 
     #find allpairs similarity
-    lshf.kneighbors(author.topSub, n_neighbors=100)
+    lshf.kneighbors(author.subreddit, n_neighbors=100)
 
     #convert ugly output structure to [key, [sub cosine], [sub index]]
     author_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
     
+    #create list of recommendations
+    author_rec_list = author_results.collect()
+    
+    
+    print(author_rec_list)
     #check to see where top sub occurs in recommendation
-
-'''
 
 
 
