@@ -2,6 +2,7 @@ from pyspark import SparkContext
 from pyspark import RDD
 from pyspark.sql import SparkSession
 from pyspark.sql import SQLContext
+from pyspark.sql import HiveContext
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 from pyspark.ml.linalg import DenseVector
