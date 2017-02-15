@@ -64,7 +64,7 @@ word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings
 for author in testList:
     print(author)
     #filter out comments from author's top subreddit
-    commentTest = comments.filter(comments.author != author.author & comments.subreddit != author.subreddit)
+    commentTest = comments.filter(comments.author != author['author'] & comments.subreddit != author['subreddit'])
     
     #train word2vec on filtered subset
     model = word2vec.fit(commentTest)
@@ -89,7 +89,7 @@ for author in testList:
         .toDF(['author', 'vector'])
         
     #get vector for tested author
-    author_test_vector = author_vectors_df.filter(author_vectors_df.author == author.author)
+    author_test_vector = author_vectors_df.filter(author_vectors_df.author == author['author'])
     author_test_vector = author_test_vector.collect()
     print(author_test_vector[0]['vector'])
     
