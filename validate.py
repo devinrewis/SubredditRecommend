@@ -63,11 +63,10 @@ word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings
 #run test for each author individually
 for author in testList:
     #filter out comments from author's top subreddit
-    commentTest = comments.filter(comments.author != author.subreddit)
+    commentTest = comments.filter(comments.author != author.author and comments.subreddit != author.subreddit)
     
     #train word2vec on filtered subset
     model = word2vec.fit(commentTest)
-    
     
     #create vectors from word2vec network
     subreddit_vectors = model.transform(commentTest)
@@ -87,6 +86,12 @@ for author in testList:
         .reduceByKey(lambda x, y: x + y) \
         .mapValues(lambda x: DenseVector(x)) \
         .toDF(['author', 'vector'])
+        
+    #get vector for tested author
+    author_test_vector = author_vectors_df.filter(author_vectors_df.author == author.author)
+    author_test_vector = author_test_vector.collect()
+    print(author_test_vector[0]['vector'])
+    
     
     #create RDDs that contain only vectors
     subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
@@ -105,7 +110,7 @@ for author in testList:
     lshf.fit(local_sub_vecs)
 
     #find allpairs similarity
-    lshf.kneighbors(author.subreddit, n_neighbors=100)
+    lshf.kneighbors(author_test_vector[0]['vector'], n_neighbors=100)
 
     #convert ugly output structure to [key, [sub cosine], [sub index]]
     author_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
