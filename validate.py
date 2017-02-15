@@ -35,6 +35,8 @@ comments = comments.filter(comments.author != "[deleted]")
 commentCounts = comments.select(comments['author'], comments['subreddit'])
 commentCounts = commentCounts.groupby('author', 'subreddit').count()
 
+commentCounts.show()
+
 '''
 ######create list of authors to analyze
 testList = []
