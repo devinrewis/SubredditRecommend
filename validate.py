@@ -88,15 +88,13 @@ for author in testList:
         .mapValues(lambda x: DenseVector(x)) \
         .toDF(['author', 'vector'])
     
-    author_vectors_df.show()
-    
     #get vector for tested author
     author_test_vector = author_vectors_df.filter(author_vectors_df.author == author['author'])
     
-    author_test_vector = author_test_vector.collect()
+    author_test_vector = author_test_vector.collect()[0]
     print(author_test_vector)
     
-    '''
+    
     #create RDDs that contain only vectors
     subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
     author_vectors = author_vectors_df.select('vector').rdd.map(lambda row: row.vector)
@@ -114,7 +112,7 @@ for author in testList:
     lshf.fit(local_sub_vecs)
 
     #find allpairs similarity
-    lshf.kneighbors(author_test_vector[0]['vector'], n_neighbors=100)
+    lshf.kneighbors(author_test_vector['vector'], n_neighbors=100)
 
     #convert ugly output structure to [key, [sub cosine], [sub index]]
     author_results = a_results.map(lambda x: [x[0], x[1][0].tolist()[0], x[1][1][0].tolist()])
@@ -125,7 +123,6 @@ for author in testList:
     
     print(author_rec_list)
     #check to see where top sub occurs in recommendation
-    '''
 
 
 
