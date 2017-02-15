@@ -91,9 +91,9 @@ for author in testList:
     #get vector for tested author
     author_test_vector = author_vectors_df.filter(author_vectors_df.author == author['author'])
     author_test_vector = author_test_vector.collect()
-    print(author_test_vector[0]['vector'])
+    print(author_test_vector)
     
-    
+    '''
     #create RDDs that contain only vectors
     subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
     author_vectors = author_vectors_df.select('vector').rdd.map(lambda row: row.vector)
@@ -122,7 +122,7 @@ for author in testList:
     
     print(author_rec_list)
     #check to see where top sub occurs in recommendation
-
+    '''
 
 
 
