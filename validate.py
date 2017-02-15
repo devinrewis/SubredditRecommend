@@ -119,13 +119,14 @@ for author in testList:
     print(a_results)
     
     #a_results = map(lambda x: [local_sub_names[x[1][k]], 1 - x[0][k]], a_results)
-    a_results = [[local_sub_names[a_results[1][x]], 1 - a_results[0][x]] for x in range(0, len(a_results[0])]
+    for x in range(0, len(a_results[0]):
+        result.append([local_sub_names[a_results[1][x]], 1 - a_results[0][x]])
     
     #create list of recommendations
     #author_rec_list = author_results.collect()
     
     
-    print(a_results)
+    print(result)
     #check to see where top sub occurs in recommendation
 
 
