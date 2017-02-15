@@ -38,7 +38,7 @@ commentCounts = comments.select(comments['author'], comments['subreddit'])
 commentCounts = commentCounts.groupby('author', 'subreddit').count().sort('count', ascending=False)
 
 #create list of authors to analyze
-testList = commentCounts.take(101)
+testList = commentCounts.take(51)
 #testList = [testList[1]]
 
 #tokenize comments for processing
