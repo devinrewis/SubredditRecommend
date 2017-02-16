@@ -54,7 +54,7 @@ remover = StopWordsRemover(inputCol="words", outputCol="filtered", stopWords=sWo
 comments = remover.transform(comments)
 
 #parameters for word2vec model
-word2vec = Word2Vec(vectorSize=8, minCount=15, maxIter=1, numPartitions=settings['numPartitions'], inputCol="filtered", outputCol="result")
+word2vec = Word2Vec(vectorSize=8, minCount=300, maxIter=1, numPartitions=settings['numPartitions'], inputCol="filtered", outputCol="result")
 
 #store scores for our validation
 scores = []
@@ -89,7 +89,7 @@ for author in testList:
     
     #get vector for tested author
     author_test_vector = author_vectors_df.filter(author_vectors_df.author == author['author'])
-    
+    print(author_test_vector)
     author_test_vector = author_test_vector.collect()[0]
     print(author_test_vector)
     
