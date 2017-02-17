@@ -11,7 +11,7 @@ from pyspark.ml.linalg import *
 from pyspark.ml.linalg import SparseVector, DenseVector, VectorUDT
 from pyspark.mllib.linalg.distributed import IndexedRowMatrix
 from operator import add
-from distribute_redis import *
+from distribute_riak import *
 from sklearn.neighbors import LSHForest
 import numpy as np
 
@@ -20,7 +20,7 @@ sc = SparkContext(appName = "Recommend")
 sqlContext = SQLContext(sc)
 
 sc.addFile("settings.yaml")
-sc.addPyFile("distribute_redis.py")
+sc.addPyFile("distribute_riak.py")
 
 #load settings.yaml
 with open("settings.yaml", 'r') as stream:
