@@ -54,7 +54,7 @@ remover = StopWordsRemover(inputCol="words", outputCol="filtered", stopWords=sWo
 comments = remover.transform(comments)
 
 #parameters for word2vec model
-word2vec = Word2Vec(vectorSize=8, minCount=300, maxIter=1, numPartitions=settings['numPartitions'], inputCol="filtered", outputCol="result")
+word2vec = Word2Vec(vectorSize=25, minCount=500, maxIter=1, numPartitions=settings['numPartitions'], inputCol="filtered", outputCol="result")
 
 #store scores for our validation
 scores = []
