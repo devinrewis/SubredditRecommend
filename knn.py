@@ -66,8 +66,8 @@ s_results = s_results.map(lambda x: [x[0], [[local_sub_names[x[2][k]], 1 - x[1][
 a_results = a_results.map(lambda x: [x[0], [[local_sub_names[x[2][k]], 1 - x[1][k]] for k in range(0, len(x[2]))]])
 
 #submit results to Redis
-s_results.foreach(deliver_sub_redis)
-a_results.foreach(deliver_author_redis)
+s_results.foreach(deliver_sub)
+a_results.foreach(deliver_author)
 
 
 
