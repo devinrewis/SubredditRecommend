@@ -29,9 +29,6 @@ with open("settings.yaml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
-#create connector to Redis
-rdb = redis.StrictRedis(host=settings['redis-host'], port=6379, db=0)
-
 #read in vector data from S3
 subreddit_vectors_df = sqlContext.read.parquet(settings['subreddit-vectors'])
 author_vectors_df = sqlContext.read.parquet(settings['author-vectors'])
