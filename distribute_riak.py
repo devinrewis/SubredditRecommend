@@ -8,7 +8,7 @@ with open("settings.yaml", 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
-myClient = riak.RiakClient(host=settings['riak-host'], port=8098)
+myClient = riak.RiakClient(host=settings['riak-host'], port=settings['riak-port'])
 
 def deliver_author(x):
     bucket = myClient.bucket('author')

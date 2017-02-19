@@ -1,6 +1,7 @@
 #Settings required to run scripts
 #Rename this file to settings.yaml before uploading to cluster
-redis-host: #host ip for redis node
+riak-host: #host ip for riak node
+riak-port: #host port for riak node
 stop-word-file: stopWords.txt #filename or url for stopword txt file
 json-data: #location where Reddit JSON comment data is stored
 orc-data: #location to save and load ORC data
