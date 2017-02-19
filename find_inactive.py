@@ -25,10 +25,11 @@ comments = hiveContext.read.format("orc").load(settings['orc-data'])
 commentCounts = comments.select(comments['subreddit'])
 commentCounts = commentCounts.groupby('subreddit').count().sort('count', ascending=False)
 
-lowActivitySubs = commentCounts.filter(commentCounts['count'] <= 10000)
+low_activity_subs = commentCounts.filter(commentCounts['count'] <= 10000)
 
-lowActivitySubs.show()
-print(lowActivitySubs.count())
+print(low_activity_subs.count())
+
+low_activity_subs.write.mode('overwrite').save(settings['inactive-subs'])
 
 
 
