@@ -8,4 +8,5 @@ orc-data: #location to save and load ORC data
 word2vec-model: #location to save word2vec model
 subreddit-vectors: #location to save vectors for subreddits
 author-vectors: #location to save vectors for authors
+inactive_subs: #location for list of inactive subreddits to be saved
 numPartitions: #number of partitions for word2vec, should be the same as partitions for spark

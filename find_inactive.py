@@ -25,7 +25,7 @@ comments = hiveContext.read.format("orc").load(settings['orc-data'])
 commentCounts = comments.select(comments['subreddit'])
 commentCounts = commentCounts.groupby('subreddit').count().sort('count', ascending=False)
 
-lowActivitySubs = commentCounts.filter(commentCounts['count'] <= 1000)
+lowActivitySubs = commentCounts.filter(commentCounts['count'] <= 10000)
 
 lowActivitySubs.show()
 print(lowActivitySubs.count())
