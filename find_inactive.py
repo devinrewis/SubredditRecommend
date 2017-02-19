@@ -23,12 +23,12 @@ comments = hiveContext.read.format("orc").load(settings['orc-data'])
 
 #count commments to find low activity subreddits
 commentCounts = comments.select(comments['subreddit'])
-commentCounts = commentCounts.groupby('subreddit').count().sort('count')
+commentCounts = commentCounts.groupby('subreddit').count().sort('count', ascending=False)
 
 lowActivitySubs = commentCounts.filter(commentCounts['count'] <= 1000)
 
 lowActivitySubs.show()
-
+print(lowActivitySubs.count())
 
 
 
