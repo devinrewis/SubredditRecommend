@@ -36,7 +36,7 @@ author_vectors_df = sqlContext.read.parquet(settings['author-vectors'])
 #filter out inactive subs
 inactive_subs = sqlContext.read.parquet(settings['inactive-subs']).rdd.map(lambda x: x.subreddit).collect()
 subreddit_vectors_df.show()
-subreddit_vectors_df = subreddit_vectors_df.filter(lambda x: x.subreddit not in inactive_subs)
+subreddit_vectors_df = subreddit_vectors_df.filter(~x.subreddit.isin(inactive_subs))
 
 #create RDDs that contain only vectors
 subreddit_vectors = subreddit_vectors_df.select('vector').rdd.map(lambda row: row.vector)
