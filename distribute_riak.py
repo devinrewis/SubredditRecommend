@@ -11,11 +11,11 @@ with open("settings.yaml", 'r') as stream:
 myClient = riak.RiakClient(host=settings['riak-host'], port=settings['riak-port'])
 
 def deliver_author(x):
-    bucket = myClient.bucket('author')
+    bucket = myClient.bucket(settings['author-bucket'])
     key = bucket.new(x[0].lower(), data=json.dumps(x[1]))
     key.store()
 
 def deliver_sub(x):
-    bucket = myClient.bucket('subreddit')
+    bucket = myClient.bucket(settings['subreddit-bucket'])
     key = bucket.new(x[0].lower(), data=json.dumps(x[1]))
     key.store()

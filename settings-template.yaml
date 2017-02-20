@@ -2,6 +2,8 @@
 #Rename this file to settings.yaml before uploading to cluster
 riak-host: #host ip for riak node
 riak-port: #host port for riak node
+author-bucket: author #name of riak bucket for authors
+subreddit-bucket: subreddit #name of riak bucket for subreddits
 stop-word-file: stopWords.txt #filename or url for stopword txt file
 json-data: #location where Reddit JSON comment data is stored
 orc-data: #location to save and load ORC data
