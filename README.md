@@ -40,7 +40,7 @@ The order that I run these scripts is as follows:
 3. word2vec_transform.py
   * This script will use the model from the previous step to transform each comment into a vector and then sum them up for both authors and subreddits and save the results to S3
 4. knn.py
-  * This script will use LSHForest and cosine similarity in order to the *k* nearest neighbors for each subreddit and author vector. By default I chose to have *k* be 100 since that is the max I would ever want to display on the website.
+  * This script will use LSHForest and cosine similarity in order to find the *k* nearest neighbors for each subreddit and author vector. By default I chose to have *k* be 100 since that is the max I would ever want to display on the website.
   * Be careful what you choose to set *k* to since you will have to store *k* results for every single author and subreddit in your dataset. When I used *k*=100 the results were nearly 400 GB when I ran the whole dataset through the pipeline.
 
 If you'd like to test different settings through the whole pipeline I've written a script for this purpose called validate.py. I used this script to benchmark certain settings and dataset sizes.
