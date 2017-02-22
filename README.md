@@ -31,14 +31,16 @@ I would **highly** recommend you **don't** use Redis unless you are only running
 Before running any of the scripts make sure to edit the settings.yaml and change the settings to be appropriate for your setup. The port for Riak is set to the default 8098, so make sure to change this if you need something different.
 
 The order that I run these scripts is as follows:
-
 1. json_to_orc.py
   * This will convert your JSON data to ORC
 2. word2vec_train.py
   * This will train the word2vec algorithm and store the model to S3
   * **Caution:** The Spark MLLib implementation of word2vec will attempt to collect the model on to your master node so you can't actually train the model on the entire dataset unless you own a master node with 3 TB of memory. The way I got around this is by only training word2vec on a 6GB subset which gave me decent results.
 3. word2vec_transform.py
-  * This script will use the model from the previous step to transform each comment into a vector and then sum them up for both authors and subreddits and save the results to Riak. The actual connector for Riak is distributed precompiled in the script called distribute_riak.py
+  * This script will use the model from the previous step to transform each comment into a vector and then sum them up for both authors and subreddits and save the results to S3
+4. knn.py
+  * This script will use LSHForest and cosine similarity in order to the *k* nearest neighbors for each subreddit and author vector. By default I chose to have *k* be 100 since that is the max I would ever want to display on the website.
+  * Be careful what you choose to set *k* to since you will have to store *k* results for every single author and subreddit in your dataset. When I used *k*=100 the results were nearly 400 GB when I ran the whole dataset through the pipeline.
 
 If you'd like to test different settings through the whole pipeline I've written a script for this purpose called validate.py. I used this script to benchmark certain settings and dataset sizes.
 
