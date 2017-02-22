@@ -1,4 +1,6 @@
-## json_to_orc.py
+## 
+# json_to_orc.py
+##
 #
 # This code will convert plain text, single line json
 # stored in an S3 bucket into Apache ORC file format

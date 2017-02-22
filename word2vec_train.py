@@ -1,6 +1,6 @@
-##########################################################################
+##
 # word2vec_train.py
-##########################################################################
+##
 #
 # This script trains a word2vec model on a set of comments
 # from S3 and saves the resulting model back to S3 for
@@ -9,7 +9,7 @@
 # word2vec_transform.py uses this trained model to project
 # comments into a vector space.
 #
-##########################################################################
+##
 
 
 from pyspark import SparkContext
@@ -24,11 +24,7 @@ from pyspark.ml.feature import *
 from pyspark.ml.linalg import *
 from pyspark.ml.linalg import SparseVector, DenseVector, VectorUDT
 from pyspark.mllib.stat import Statistics
-from fnmatch import fnmatch
-import pickle
 import string
-import boto3
-import botocore
 import yaml
 
 sc = SparkContext(appName = "Word2Vec Train")
@@ -70,12 +66,6 @@ word2vec = Word2Vec(vectorSize=25, minCount=10000, maxIter=1, numPartitions=sett
 
 #train the model against comment data
 model = word2vec.fit(comments)
-
-
-
-#use for debugging, show resulting dataframe
-#should appear as dataframe containing words and vectors
-#model.getVectors().show()
 
 #save model to S3 for later use
 model.save(settings['word2vec-model'])
