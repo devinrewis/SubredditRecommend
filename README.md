@@ -31,6 +31,7 @@ I would **highly** recommend you **don't** use Redis unless you are only running
 Before running any of the scripts make sure to edit the settings.yaml and change the settings to be appropriate for your setup. The port for Riak is set to the default 8098, so make sure to change this if you need something different.
 
 The order that I run these scripts is as follows:
+
 1. json_to_orc.py
   * This will convert your JSON data to ORC
 2. word2vec_train.py
