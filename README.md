@@ -39,7 +39,9 @@ The order that I run these scripts is as follows:
   * **Caution:** The Spark MLLib implementation of word2vec will attempt to collect the model on to your master node so you can't actually train the model on the entire dataset unless you own a master node with 3 TB of memory. The way I got around this is by only training word2vec on a 6GB subset which gave me decent results.
 3. word2vec_transform.py
   * This script will use the model from the previous step to transform each comment into a vector and then sum them up for both authors and subreddits and save the results to S3
-4. nns.py
+4. find_inactive.py
+  * This script will create an RDD that contains a list of subreddits with a low number of comments. In the next step these subreddits will be filtered out. If you wish to skip this step then you need to comment out the lines that load this file in nss.py. I recommend you don't skip this step as these low activity subreddits will all create a cluster thats very close to every other cluster and will lead to some *weird* results.
+5. nns.py
   * This script will use LSHForest and cosine similarity in order to find the approximate nearest neighbors (not to be confused with k-NN which finds exact neighbors) for each subreddit and author vector. By default I chose to have the number of candidates be 100 since that is the max I would ever want to display on the website. 
   * Be careful what you choose to set candidates to since you will have to store candidate results for every single author and subreddit in your dataset. When I used n_candidates=100 the results were nearly 400 GB when I ran the whole dataset through the pipeline.
 
