@@ -1,5 +1,5 @@
 # Subreddit Recommendation Engine using Word2Vec
-The purpose of this project is to recommend subreddits to users based on the content of discussion that occurs in those subreddits.
+The purpose of this project is to recommend subreddits to users based on the content of discussion that occurs in those subreddits. Click [here](https://youtu.be/r5KqjgIoayw) to see a video demo of it in action.
 
 Big thank you to [Jason Baumgartner](https://pushshift.io/) for providing the Reddit dataset. The data itself can be acquired from [here](https://files.pushshift.io/).
 
